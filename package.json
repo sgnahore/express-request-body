@@ -1,5 +1,5 @@
 {
-  "name": "express-method-body",
+  "name": "express-request-body",
   "version": "0.0.1",
   "scripts": {
     "start": "ts-node src/server.ts",
