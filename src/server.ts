@@ -1,4 +1,5 @@
 import express from "express";
+import USERS from "../users.json";
 
 const app = express();
 app.use(express.json()); // to parse data
@@ -34,6 +35,34 @@ app.post<{}, {}, { numbers: number[] }>("/sum", (req, res) => {
     original: `${req.body.numbers.join(" + ")}`,
     result: total,
   });
+});
+
+app.get("/users", (req, res) => {
+  res.json(USERS);
+});
+
+app.get("/users/:id", (req, res) => {
+  const individual = req.params.id;
+  const user = USERS.find((userInfo) => userInfo.id.toString() === individual);
+  res.json(user);
+});
+
+app.post("/users", (req, res) => {});
+
+app.put("/users/:id", (req, res) => {});
+
+app.delete<{ id: string }>("/users/:id", (req, res) => {
+  const individual = req.params.id;
+  const userIndex = USERS.findIndex(
+    (userInfo) => userInfo.id.toString() === individual
+  );
+
+  if (userIndex !== -1) {
+    const user = USERS.splice(userIndex, 1)[0]; // Remove the element and store it in 'user'
+    res.json(user);
+  } else {
+    res.status(404).json({ error: "User not found" });
+  }
 });
 
 // using 4000 by convention, but could be changed
